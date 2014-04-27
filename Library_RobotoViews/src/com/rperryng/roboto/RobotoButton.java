@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.rperryng.roboto.common.Constants;
 import com.rperryng.roboto.common.RobotoFont;
@@ -16,28 +16,28 @@ import com.rperryng.roboto.common.RobotoUtils;
  * 
  * @author Ryan Perry-Nguyen
  */
-public class RobotoTextView extends TextView {
+public class RobotoButton extends Button {
 
     private RobotoFont mRobotoFont;
 
     /**
-     * Use this constructor when creating a {@link RobotoTextView}
+     * Use this constructor when creating a {@link RobotoButton}
      * programmatically
      * 
      * @param context
      * @param robotoFont
      */
-    public RobotoTextView(Context context, RobotoFont robotoFont) {
+    public RobotoButton(Context context, RobotoFont robotoFont) {
         super(context);
         mRobotoFont = robotoFont;
         setRoboto();
     }
 
-    public RobotoTextView(Context context, AttributeSet attrs) {
+    public RobotoButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RobotoTextView(Context context, AttributeSet attrs, int defStyle) {
+    public RobotoButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(

@@ -9,7 +9,6 @@ import java.io.InputStream;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Environment;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -41,9 +40,9 @@ public class RobotoUtils {
         SparseArray<Typeface> cache = TypefaceHolder.getCacheInstance();
         
         // Attempt to grab the desired Typeface from the cache
-        Typeface typeface = cache.get(key, Typeface.DEFAULT);
+        Typeface typeface = cache.get(key, null);
         
-        if (typeface.equals(Typeface.DEFAULT)) {
+        if (typeface == null) {
             // The typeface isn't cached, attempt to create a new instance of
             // the desired Typeface
             typeface = createTypefaceFromResource(context, robotoFont.getRawFontResourceId());

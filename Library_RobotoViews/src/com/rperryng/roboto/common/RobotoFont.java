@@ -8,6 +8,12 @@ import android.util.Log;
 import com.rperryng.roboto.R;
 
 
+/**
+ * An enum containing the resource ID's of all the roboto fonts.
+ * 
+ * @author Ryan Perry-Nguyen
+ *
+ */
 public enum RobotoFont {
     
     REGULAR(R.raw.rv__regular),
