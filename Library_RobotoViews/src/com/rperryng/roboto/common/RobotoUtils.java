@@ -1,83 +1,105 @@
 
 package com.rperryng.roboto.common;
 
-import java.util.Hashtable;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.util.AttributeSet;
+import android.os.Environment;
+import android.util.Log;
+import android.util.SparseArray;
 
-import com.rperryng.roboto.R;
-
-/**
- * A helper class containing the methods all the extended views in this library
- * use to set the TypeFace to Roboto.
- * 
- * @author Ryan Perry-Nguyen
- */
 public class RobotoUtils {
 
-    /**
-     * A Hashtable holding which fonts have already been retrieved from the
-     * Application's Assets. This is necessary to avoid memory leaks, as Android
-     * does not cache Typefaces retrieved from assets pre-ICS,
-     */
-    private static final Hashtable<String, Typeface> mCache = new Hashtable<String, Typeface>();
+    // Singleton HashMap to cache the created typefaces
+    private enum TypefaceHolder {
+        INSTANCE;
 
-    /**
-     * Grabs an instance of the desired Typeface. If this method is called more
-     * than once for the same Typeface, the same instance of that Typeface will
-     * be returned
-     * 
-     * @param context A context used to access the Application's assets.
-     * @param assetName One of the AssetFontName's as defined in the
-     *            {@link RobotoAsset} enum. Used to grab the corresponding
-     *            Typeface in the assets folder
-     * @return The desired Typeface. Use {@code setTypeface()}
-     */
-    public static Typeface getTypeface(Context context, RobotoAsset assetName) {
-        String fontName = assetName.getAssetFontName();
+        private SparseArray<Typeface> mTypefaceCache;
 
-        synchronized (fontName) {
-            if (!mCache.containsKey(fontName)) {
-
-                try {
-                    Typeface typeface = Typeface.createFromAsset(context.getAssets(),
-                            String.format("fonts/%s.ttf", fontName));
-                    mCache.put(fontName, typeface);
-                } catch (RuntimeException e) {
-                    throw new RuntimeException("Couldn't find font with name: " + fontName
-                            + ".  Is the .ttf file in the assets/fonts folder?");
-                }
+        static SparseArray<Typeface> getCacheInstance() {
+            if (INSTANCE.mTypefaceCache == null) {
+                INSTANCE.mTypefaceCache = new SparseArray<Typeface>();
             }
-            return mCache.get(fontName);
+            return INSTANCE.mTypefaceCache;
         }
     }
 
     /**
-     * @param context A Context in order to grab the styled attribute
-     * @param attrs The attribute set associated with this instance
-     * @return The integer representing the ordinal value of one of the
-     *         instances in the {@link RobotoAsset} enum. Use
-     *         {@link RobotoAsset}'s {@code getFontName()} to retrieve
-     *         corresponding asset name
+     * @param context A Context to access the resources of the application
+     * @param robotoFont The desired font, as represented by one of the
+     *            {@link RobotoFont} values
+     * @return The desired typeface, or the default typeface if the desired
+     *         typeface could not be created
      */
-    public static int getValueForStyleable(Context context, AttributeSet attrs) {
+    public static Typeface getTypeface(Context context, RobotoFont robotoFont) {
+        int key = robotoFont.getRawFontResourceId();
+        SparseArray<Typeface> cache = TypefaceHolder.getCacheInstance();
+        
+        // Attempt to grab the desired Typeface from the cache
+        Typeface typeface = cache.get(key, Typeface.DEFAULT);
+        
+        if (typeface.equals(Typeface.DEFAULT)) {
+            // The typeface isn't cached, attempt to create a new instance of
+            // the desired Typeface
+            typeface = createTypefaceFromResource(context, robotoFont.getRawFontResourceId());
 
-        // Obtain the Roboto Styleable TypedArray
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Roboto, 0, 0);
+            if (typeface != null) {
+                // Typeface successfully created. cache the instance.
+                cache.put(key, typeface);
 
-        int fontOrdinal;
-        try {
-            // Retrieve the assigned value for the Roboto_font attribute
-            fontOrdinal = a.getInteger(R.styleable.Roboto_font, 0);
-        } finally {
-            // Recycle the resource for later-reuse
-            a.recycle();
-        }
+            } else {
+                // Couldn't create the desired typeface. Fallback to the default
+                // typeface
+                typeface = Typeface.DEFAULT;
+            }
+        } 
 
-        return fontOrdinal;
+        Log.d("ryan", "font: " + robotoFont.toString());
+        return typeface;
     }
 
+    /**
+     * http://stackoverflow.com/questions/7610355/font-in-android-library
+     * Creates a typeface that has been placed within the res/raw directory
+     * 
+     * @param context A context to access the application's resources
+     * @param resourceId The id of the raw resource file
+     * @return The desired typeface, or null if it could not be created.
+     */
+    private static Typeface createTypefaceFromResource(Context context, int resourceId) {
+
+        Typeface typeface = null;
+        InputStream inputStream = context.getResources().openRawResource(resourceId);
+        String outPath = context.getCacheDir() + "/tmp.raw";
+
+        // extract the resource to a temporary file.
+        try {
+            byte[] buffer = new byte[inputStream.available()];
+            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(
+                    outPath));
+
+            int bufferLength = 0;
+            while ((bufferLength = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, bufferLength);
+            }
+            outputStream.close();
+
+            // Create the Typeface from the temporary file
+            typeface = Typeface.createFromFile(outPath);
+
+            // Remove the (no longer needed) temporary file
+            new File(outPath).delete();
+
+        } catch (IOException e) {
+            // Couldn't create file.
+            typeface = null;
+        }
+
+        return typeface;
+    }
 }
