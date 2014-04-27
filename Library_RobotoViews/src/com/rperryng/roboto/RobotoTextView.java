@@ -4,10 +4,8 @@ package com.rperryng.roboto;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
 
-import com.rperryng.roboto.common.Constants;
 import com.rperryng.roboto.common.RobotoFont;
 import com.rperryng.roboto.common.RobotoUtils;
 
@@ -46,15 +44,16 @@ public class RobotoTextView extends TextView {
                 defStyle,
                 0);
 
-        mRobotoFont = RobotoFont.values()[a.getInteger(R.styleable.RobotoTextView_font,
-                Constants.DEFAULT_ROBOTO_FONT_ORDINAL)];
+        int attributeValue = a.getInteger(R.styleable.RobotoTextView_font,
+                RobotoFont.DEFAULT_ATTRIBUTE_VALUE);
+        mRobotoFont = RobotoFont.getRobotoFontWithAtributeValue(attributeValue);
 
         a.recycle();
         setRoboto();
     }
 
     /**
-     * Sets the current {@link View} instance to the desired Roboto font
+     * Sets the current instance to the desired Roboto font
      */
     private void setRoboto() {
         if (!isInEditMode()) {
