@@ -4,28 +4,28 @@ package com.rperryng.roboto;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
 
 import com.rperryng.roboto.common.RobotoFont;
 import com.rperryng.roboto.common.RobotoUtils;
 
 /**
- * An extended {@link TextView} that uses the desired Roboto font
+ * An extended {@link CheckedTextView} that uses the desired Roboto font
  * 
  * @author Ryan Perry-Nguyen
  */
-public class RobotoTextView extends TextView {
+public class RobotoCheckedTextView extends CheckedTextView {
 
     private RobotoFont mRobotoFont;
 
     /**
-     * Use this constructor when creating a {@link RobotoTextView}
+     * Use this constructor when creating a {@link RobotoCheckedTextView}
      * programmatically
      * 
      * @param context
      * @param robotoFont
      */
-    public RobotoTextView(Context context, RobotoFont robotoFont) {
+    public RobotoCheckedTextView(Context context, RobotoFont robotoFont) {
         super(context);
         mRobotoFont = robotoFont;
         setRoboto();
@@ -34,7 +34,7 @@ public class RobotoTextView extends TextView {
     /**
      * Called when the view is inflated from an xml file
      */
-    public RobotoTextView(Context context, AttributeSet attrs) {
+    public RobotoCheckedTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setRobotoFromAttributeSet(attrs);
     }
@@ -42,7 +42,7 @@ public class RobotoTextView extends TextView {
     /**
      * Called when the view is inflated from an xml file with a style attached
      */
-    public RobotoTextView(Context context, AttributeSet attrs, int defStyle) {
+    public RobotoCheckedTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setRobotoFromAttributeSet(attrs);
     }
@@ -79,7 +79,7 @@ public class RobotoTextView extends TextView {
     }
 
     /**
-     * @return The {@link RobotoFont} associated with this View
+     * @return The {@link RobotoFont} associated with this view
      */
     public RobotoFont getRobotoFont() {
         return mRobotoFont;

@@ -10,7 +10,7 @@ import com.rperryng.roboto.common.RobotoFont;
 import com.rperryng.roboto.common.RobotoUtils;
 
 /**
- * TextView that uses the desired Roboto font
+ * An extended {@link Button} that uses the desired Roboto font
  * 
  * @author Ryan Perry-Nguyen
  */
@@ -31,23 +31,30 @@ public class RobotoButton extends Button {
         setRoboto();
     }
 
+    /**
+     * Called when the view is inflated from an xml file
+     */
     public RobotoButton(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        setRobotoFromAttributeSet(attrs);
     }
 
+    /**
+     * Called when the view is inflated from an xml file with a style attached
+     */
     public RobotoButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        setRobotoFromAttributeSet(attrs);
+    }
 
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.RobotoTextView,
-                defStyle,
-                0);
-
-        int attributeValue = a.getInteger(R.styleable.RobotoTextView_font,
+    /**
+     * @param attrs The attribute set the font value is set in
+     */
+    private void setRobotoFromAttributeSet(AttributeSet attrs) {
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoButton);
+        int attributeValue = a.getInteger(R.styleable.RobotoButton_font,
                 RobotoFont.DEFAULT_ATTRIBUTE_VALUE);
-        mRobotoFont = RobotoFont.getRobotoFontWithAtributeValue(attributeValue);
-
+        mRobotoFont = RobotoFont.getRobotoFontForAttributeValue(attributeValue);
         a.recycle();
         setRoboto();
     }
@@ -62,9 +69,19 @@ public class RobotoButton extends Button {
     }
 
     /**
-     * @return The {@link RobotoFont} enum associated with this View
+     * Set this View's typeface to the desired RobotoFont
+     * 
+     * @param The new RobotoFont to set this view's Typeface to.
      */
-    public RobotoFont getRobotoFamily() {
+    public void setRobotoFont(RobotoFont robotoFont) {
+        mRobotoFont = robotoFont;
+        setRoboto();
+    }
+
+    /**
+     * @return The {@link RobotoFont} associated with this view
+     */
+    public RobotoFont getRobotoFont() {
         return mRobotoFont;
     }
 }

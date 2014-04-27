@@ -4,7 +4,6 @@ package com.rperryng.roboto.common;
 import java.util.Locale;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.rperryng.roboto.R;
 
@@ -17,9 +16,9 @@ public enum RobotoFont {
 
     // I would use the ordinal values, but if you decide to omit one of the
     // fonts to save space, then the ordinal values no longer match the
-    // attribute values as defined in attrs.xml and since the value field for a
-    // styleable enum doesn't allow you to reference xml integers, there is no
-    // 'one location' where I can define the attribute values. 
+    // attribute values as defined in the attrs.xml file. and since the value
+    // field for a styleable enum doesn't allow you to reference xml integers,
+    // there is no 'one location' where I can define the attribute values.
     REGULAR(R.raw.rv__regular, 0),
     REGULAR_BOLD(R.raw.rv__regular_bold, 1),
     REGULAR_ITALIC(R.raw.rv__regular_italic, 2),
@@ -54,15 +53,28 @@ public enum RobotoFont {
         mAttributeValue = attributeValue;
     }
 
+    /**
+     * @return The related .ttf resource id this Roboto Font points to
+     */
     public int getRawFontResourceId() {
         return mRawFontResourceId;
     }
 
+    /**
+     * @return The attribute value this RobotoFont has
+     */
     public int getAttributeValue() {
         return mAttributeValue;
     }
 
-    public static RobotoFont getRobotoFontWithAtributeValue(int attributeValue) {
+    /**
+     * Returns the RobotoFont with the matching AttributeValue
+     * 
+     * @param attributeValue The attribute value as mapped in the attrs file
+     * @return {@link RobotoFont}, or an IllegalArgumentException if there is no
+     *         RobotoFont with this attributeValue
+     */
+    public static RobotoFont getRobotoFontForAttributeValue(int attributeValue) {
         for (RobotoFont robotoFont : RobotoFont.values()) {
             if (robotoFont.getAttributeValue() == attributeValue) {
                 return robotoFont;
@@ -77,7 +89,6 @@ public enum RobotoFont {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         String[] splitString = TextUtils.split(("Roboto " + this.name().replace("_", " ")), " ");
-        Log.d("ryan", ("Roboto " + this.name().replace("_", " ")));
 
         for (String target : splitString) {
             stringBuilder

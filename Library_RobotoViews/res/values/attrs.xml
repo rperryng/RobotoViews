@@ -22,6 +22,21 @@
         <enum name="condensedLightItalic" value="17" />
     </attr>
 
+    <declare-styleable name="RobotoButton">
+        <attr name="font" />
+    </declare-styleable>
+    <declare-styleable name="RobotoCheckBox">
+        <attr name="font" />
+    </declare-styleable>
+    <declare-styleable name="RobotoCheckedTextView">
+        <attr name="font" />
+    </declare-styleable>
+    <declare-styleable name="RobotoEditText">
+        <attr name="font" />
+    </declare-styleable>
+    <declare-styleable name="RobotoRadioButton">
+        <attr name="font" />
+    </declare-styleable>
     <declare-styleable name="RobotoTextView">
         <attr name="font" />
     </declare-styleable>

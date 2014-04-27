@@ -9,7 +9,6 @@ import java.io.InputStream;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.util.SparseArray;
 
 public class RobotoUtils {
@@ -58,7 +57,6 @@ public class RobotoUtils {
             }
         } 
 
-        Log.d("ryan", "font: " + robotoFont.toString());
         return typeface;
     }
 
