@@ -11,6 +11,13 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.SparseArray;
 
+/**
+ * Helper class for doing all the heavylifting when grabbing Roboto Typefaces
+ * from their raw .ttf file, or from the cache if they have been called before
+ * during this sessions.
+ * 
+ * @author Ryan Perry-Nguyen
+ */
 public class RobotoUtils {
 
     // Singleton HashMap to cache the created typefaces

@@ -51,8 +51,8 @@ public class RobotoEditText extends EditText {
      * @param attrs The attribute set the font value is set in
      */
     private void setRobotoFromAttributeSet(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoButton);
-        int attributeValue = a.getInteger(R.styleable.RobotoButton_font,
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoEditText);
+        int attributeValue = a.getInteger(R.styleable.RobotoEditText_font,
                 RobotoFont.DEFAULT_ATTRIBUTE_VALUE);
         mRobotoFont = RobotoFont.getRobotoFontForAttributeValue(attributeValue);
         a.recycle();
